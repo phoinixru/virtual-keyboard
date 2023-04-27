@@ -1,1 +1,10 @@
-/*# sourceMappingURL=main.css.map */
+.textarea {
+  width: 100%;
+  height: 200px;
+  resize: vertical;
+}
+
+.wrapper {
+  width: 500px;
+  margin: auto;
+}/*# sourceMappingURL=main.css.map */

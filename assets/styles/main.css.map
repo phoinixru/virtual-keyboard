@@ -1,1 +1,1 @@
-{"version":3,"sources":[],"names":[],"mappings":"","file":"main.css"}
+{"version":3,"sources":["../../sass/components/_textarea.scss","main.css","../../sass/layout/_wrapper.scss"],"names":[],"mappings":"AAAA;EACE,WAAA;EACA,aAAA;EACA,gBAAA;ACCF;;ACJA;EACE,YAAA;EACA,YAAA;ADOF","file":"main.css","sourcesContent":[".textarea {\n  width: 100%;\n  height: 200px;\n  resize: vertical;\n}",".textarea {\n  width: 100%;\n  height: 200px;\n  resize: vertical;\n}\n\n.wrapper {\n  width: 500px;\n  margin: auto;\n}",".wrapper {\n  width: 500px;\n  margin: auto;\n}"]}
