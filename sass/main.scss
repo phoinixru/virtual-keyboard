@@ -2,8 +2,11 @@
 
 // Base
 @import 'base/normalize';
+@import 'base/fonts';
+@import 'base/typography';
 
 // Components
+@import 'components/page';
 @import 'components/textarea';
 @import 'components/keyboard';
 
