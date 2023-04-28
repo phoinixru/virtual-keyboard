@@ -381,12 +381,16 @@ button {
 .key:hover {
   background: var(--bg-button-hover);
 }
-.key_pressed, .key:active {
-  background: var(--bg-button-pressed);
+.key[data-icon] {
+  flex-direction: column;
+  font-size: 0.8em;
 }
 .key_functional {
   flex-grow: 1;
   background: var(--bg-button-functional);
+}
+.key_pressed, .key:active {
+  background: var(--bg-button-pressed);
 }
 .key_arrow:after {
   display: none;
@@ -394,13 +398,6 @@ button {
 .key_Space {
   flex-grow: 10;
 }
-.key_ShiftRight {
-  flex-grow: unset;
-}
-.key_ShiftRight:after {
-  display: none;
-}
-
 .wrapper {
   width: 800px;
   margin: auto;

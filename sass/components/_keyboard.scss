@@ -49,14 +49,19 @@
     background: var(--bg-button-hover);
   }
 
-  &_pressed,
-  &:active {
-    background: var(--bg-button-pressed);
+  &[data-icon] {
+    flex-direction: column;
+    font-size: 0.8em;
   }
 
   &_functional {
     flex-grow: 1;
     background: var(--bg-button-functional);
+  }
+
+  &_pressed,
+  &:active {
+    background: var(--bg-button-pressed);
   }
 
   &_arrow:after {
@@ -68,11 +73,7 @@
   }
 
   &_ShiftRight {
-    flex-grow: unset;
 
-    &:after {
-      display: none;
-    }
   }
 
 }
