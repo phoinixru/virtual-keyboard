@@ -318,6 +318,11 @@ template {
   display: none;
 }
 
+body {
+  font-smooth: auto;
+  -webkit-font-smoothing: antialiased;
+}
+
 button {
   font-family: "Roboto", sans-serif;
 }
