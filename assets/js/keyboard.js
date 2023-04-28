@@ -11,6 +11,7 @@ const CssClasses = {
   KEY_ICON: 'key_icon',
   KEY_LEFT: 'key_left',
   KEY_RIGHT: 'key_right',
+  KEY_PRESSED: 'key_pressed',
 };
 
 const LAYOUT = [
@@ -32,23 +33,20 @@ export default class VirtualKeyboard {
   }
 
   addEventListeners() {
-    this.container.addEventListener('click', (event) => this.handleClick(event));
+    this.container.addEventListener('mousedown', (event) => this.handleMouseEvents(event));
+    this.container.addEventListener('mouseup', (event) => this.handleMouseEvents(event));
+
+    document.body.addEventListener('keydown', (event) => this.handleKeyDown(event));
+    document.body.addEventListener('keyup', (event) => this.handleKeyUp(event));
   }
 
   renderKeyboard() {
     const layout = elt('div', { className: CssClasses.LAYOUT });
 
-    layout.append(
-      ...LAYOUT.map((keys) => {
-        const row = elt('div', { className: CssClasses.ROW });
+    const key = (key) => this.renderKey(key);
+    const row = (keys) => elt('div', { className: CssClasses.ROW }, ...keys.map(key));
 
-        row.append(
-          ...keys.map((key) => this.renderKey(key)),
-        );
-
-        return row;
-      }),
-    );
+    layout.append(...LAYOUT.map(row));
 
     this.container.append(layout);
   }
@@ -88,20 +86,46 @@ export default class VirtualKeyboard {
 
     button.innerText = btnLabel;
 
+    const dataset = { code };
+    Object.assign(button.dataset, dataset);
+
     this.buttons[code] = button;
 
     return button;
   }
 
-  handleClick(event) {
-    const {
-      target,
-    } = event;
+  handleMouseEvents(event) {
+    const { target, button, type } = event;
 
-    if (!target.matches('.key')) {
+    if (!target.matches('.key') || button) {
       return;
     }
 
-    return true;
+    const { code } = target.dataset;
+    const isPressed = type === 'mousedown';
+
+    if (type === 'mousedown') {
+      document.addEventListener('mouseup', () => {
+        this.togglePressed(code, false);
+      }, { once: true });
+    }
+
+    this.togglePressed(code, isPressed);
+  }
+
+  handleKeyDown(event) {
+    this.togglePressed(event.code, true);
+  }
+
+  handleKeyUp(event) {
+    this.togglePressed(event.code, false);
+  }
+
+  togglePressed(code, isPressed = false) {
+    const button = this.buttons[code];
+
+    if (button) {
+      button.classList.toggle(CssClasses.KEY_PRESSED, isPressed);
+    }
   }
 }
