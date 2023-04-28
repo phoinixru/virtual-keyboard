@@ -50,7 +50,7 @@ export default class Textarea {
 
     if (selectionStart === selectionEnd) {
       if (count < 0) {
-        element.selectionStart += count;
+        element.selectionStart = Math.max(selectionStart + count, 0);
       } else {
         element.selectionEnd += count;
       }
