@@ -23,11 +23,19 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-
   height: 40px;
   width: 40px;
+  padding: 0;
+
+  border: 1px solid var(--color-button-border);
+  border-radius: 4px;
+
+  color: var(--color-button);
+  background: var(--bg-button);
+
   cursor: pointer;
   user-select: none;
+  transition: background 0.2s;
 
   &:before {
     content: attr(data-icon);
@@ -37,8 +45,18 @@
     content: attr(data-label);
   }
 
+  &:hover {
+    background: var(--bg-button-hover);
+  }
+
+  &_pressed,
+  &:active {
+    background: var(--bg-button-pressed);
+  }
+
   &_functional {
     flex-grow: 1;
+    background: var(--bg-button-functional);
   }
 
   &_arrow:after {
