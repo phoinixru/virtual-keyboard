@@ -31,13 +31,18 @@ const LANGUAGE = {
 
 const CREATED_IN_TEXT = 'Keyboard created in MacOS';
 
+const REPEAT_KEYS_DEFAULT = true;
+const REPEAT_KEYS_DELAY = 500;
+const REPEAT_KEYS_INTERVAL = 100;
+
 export default class VirtualKeyboard {
-  constructor() {
+  constructor({ repeatKeys = REPEAT_KEYS_DEFAULT } = {}) {
     this.container = elt('div', { className: CssClasses.BLOCK });
     this.buttons = {};
     this.lang = 'en';
     this.isCapsLocked = false;
     this.isShiftPressed = false;
+    this.repeatKeys = repeatKeys;
 
     this.renderKeyboard();
     this.addCreatedClause();
@@ -143,16 +148,34 @@ export default class VirtualKeyboard {
     this.togglePressed(code, isPressed);
 
     if (type === 'mousedown') {
-      document.addEventListener('mouseup', () => {
-        this.togglePressed(code, false);
-      }, { once: true });
-
-      this.dispatchKeyboardEvent(code);
+      this.handleMouseDown(code);
     }
 
     if (code === 'CapsLock') {
       this.setCapsLock(event);
     }
+  }
+
+  handleMouseDown(code) {
+    const dispatch = () => this.dispatchKeyboardEvent(code);
+
+    let repeatKeysDelay, repeatKeysInterval;
+    
+    if (this.repeatKeys) {
+      repeatKeysDelay = setTimeout(() => {
+        dispatch();
+        repeatKeysInterval = setInterval(dispatch, REPEAT_KEYS_INTERVAL)
+      }, REPEAT_KEYS_DELAY);
+    }
+
+    document.addEventListener('mouseup', () => {
+      this.togglePressed(code, false);
+
+      clearInterval(repeatKeysDelay);
+      clearInterval(repeatKeysInterval);
+    }, { once: true });
+
+    dispatch();
   }
 
   handleKeyboardEvents(event) {
