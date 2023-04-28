@@ -248,57 +248,86 @@ export default {
   /* Functional Keys */
   AltLeft: {
     key: 'Alt',
+    label: 'alt',
+    icon: '⌥',
   },
   AltRight: {
     key: 'Alt',
+    label: 'alt',
+    icon: '⌥',
   },
   CapsLock: {
     key: 'CapsLock',
+    label: 'caps lock',
+    icon: '⇪',
   },
   ControlLeft: {
     key: 'Control',
+    label: 'ctrl',
+    icon: '⌃',
   },
   ControlRight: {
     key: 'Control',
+    label: 'ctrl',
+    icon: '⌃',
   },
   Enter: {
     key: 'Enter',
+    label: 'enter',
+    icon: '↵',
   },
   MetaLeft: {
     key: 'Meta',
+    label: 'cmd',
+    icon: '⌘',
   },
   MetaRight: {
     key: 'Meta',
+    label: 'cmd',
+    icon: '⌘',
   },
   ShiftLeft: {
     key: 'Shift',
+    label: 'shift',
+    icon: '⇧',
   },
   ShiftRight: {
     key: 'Shift',
+    label: 'shift',
+    icon: '⇧',
   },
   Space: {
     key: ' ',
+    label: ' ',
   },
   Tab: {
     key: 'Tab',
+    label: 'tab',
+    icon: '⇥',
   },
 
   /* Control Pad Section */
   Delete: {
     key: 'Delete',
+    label: 'delete',
+    icon: '⌦',
   },
 
   /* Arrow Pad Section */
   ArrowLeft: {
     key: 'ArrowLeft',
+    icon: '←',
   },
   ArrowUp: {
     key: 'ArrowUp',
+    icon: '↑',
   },
   ArrowDown: {
     keys: 'ArrowDown',
+    icon: '↓',
   },
   ArrowRight: {
     keys: 'ArrowRight',
+    icon: '→',
   },
 };
