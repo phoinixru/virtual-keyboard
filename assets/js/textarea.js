@@ -34,7 +34,7 @@ export default class Textarea {
       this.addChar(key);
     }
 
-    this.focus();
+    setTimeout(() => this.focus(), 1);
   }
 
   addChar(char) {
@@ -48,7 +48,7 @@ export default class Textarea {
     const { element } = this;
     const { selectionStart, selectionEnd } = element;
 
-    if (selectionStart == selectionEnd) {
+    if (selectionStart === selectionEnd) {
       if (count < 0) {
         element.selectionStart += count;
       } else {
@@ -75,6 +75,14 @@ export default class Textarea {
 
     if (key === 'Backspace') {
       this.deleteSelection(-1);
+    }
+
+    if (key === 'Tab') {
+      this.addChar('\t');
+    }
+
+    if (key === 'Enter') {
+      this.addChar('\n');
     }
   }
 
