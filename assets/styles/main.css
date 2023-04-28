@@ -333,6 +333,9 @@ button {
   resize: vertical;
   border-radius: 3px;
 }
+.textarea:focus {
+  outline: none;
+}
 
 .keyboard {
   border: 1px solid #000;
