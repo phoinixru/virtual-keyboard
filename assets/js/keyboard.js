@@ -3,6 +3,7 @@ import KEYS from './keys.js';
 
 const CssClasses = {
   BLOCK: 'keyboard',
+  CREATED: 'keyboard__created',
   LAYOUT: 'keyboard__layout',
   ROW: 'keyboard__row',
   CAPS_LOCKED: 'keyboard_caps_locked',
@@ -28,6 +29,8 @@ const LANGUAGE = {
   SECOND: 'ru',
 };
 
+const CREATED_IN_TEXT = 'Keyboard created in MacOS';
+
 export default class VirtualKeyboard {
   constructor() {
     this.container = elt('div', { className: CssClasses.BLOCK });
@@ -37,6 +40,7 @@ export default class VirtualKeyboard {
     this.isShiftPressed = false;
 
     this.renderKeyboard();
+    this.addCreatedClause();
     this.addEventListeners();
   }
 
@@ -46,6 +50,14 @@ export default class VirtualKeyboard {
 
     document.body.addEventListener('keydown', (event) => this.handleKeyboardEvents(event));
     document.body.addEventListener('keyup', (event) => this.handleKeyboardEvents(event));
+  }
+
+  addCreatedClause() {
+    this.container.append(
+      elt('p', {
+        className: CssClasses.CREATED,
+      }, CREATED_IN_TEXT),
+    );
   }
 
   renderKeyboard() {

@@ -1,6 +1,4 @@
 .keyboard {
-  border: 1px solid #000;
-  border-radius: 3px;
   width: 750px;
   margin: auto;
 }
@@ -10,6 +8,8 @@
   display: flex;
   flex-direction: column;
   gap: 5px;
+  border: 1px solid #000;
+  border-radius: 3px;
 }
 
 .keyboard__row {
@@ -18,6 +18,10 @@
   flex-wrap: nowrap;
   justify-content: space-between;
   gap: 5px;
+}
+
+.keyboard__created {
+  text-align: center;
 }
 
 .key {

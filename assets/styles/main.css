@@ -7,6 +7,7 @@
   --color-button: #555;
   --color-button-border: #666;
   --ff-monospace: "Courier New", Courier, monospace;
+  --ff-sans-serif: "Roboto", sans-serif;
 }
 
 /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
@@ -320,12 +321,13 @@ template {
 }
 
 body {
+  font-family: var(--ff-sans-serif);
   font-smooth: auto;
   -webkit-font-smoothing: antialiased;
 }
 
 button {
-  font-family: "Roboto", sans-serif;
+  font-family: var(--ff-sans-serif);
 }
 
 .page {
@@ -348,8 +350,6 @@ button {
 }
 
 .keyboard {
-  border: 1px solid #000;
-  border-radius: 3px;
   width: 750px;
   margin: auto;
 }
@@ -359,6 +359,8 @@ button {
   display: flex;
   flex-direction: column;
   gap: 5px;
+  border: 1px solid #000;
+  border-radius: 3px;
 }
 
 .keyboard__row {
@@ -367,6 +369,10 @@ button {
   flex-wrap: nowrap;
   justify-content: space-between;
   gap: 5px;
+}
+
+.keyboard__created {
+  text-align: center;
 }
 
 .key {

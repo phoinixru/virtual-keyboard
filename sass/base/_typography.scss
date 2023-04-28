@@ -1,8 +1,9 @@
 body {
+  font-family: var(--ff-sans-serif);
   font-smooth: auto;
   -webkit-font-smoothing: antialiased;
 }
 
 button {
-  font-family: 'Roboto', sans-serif;
+  font-family: var(--ff-sans-serif);
 }
