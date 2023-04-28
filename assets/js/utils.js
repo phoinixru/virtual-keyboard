@@ -15,4 +15,8 @@ function elt(type, props, ...children) {
   return dom;
 }
 
-export { qs, qsa, elt };
+const { key, values, assign } = Object;
+
+export {
+  qs, qsa, elt, key, values, assign,
+};
