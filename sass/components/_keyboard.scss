@@ -19,10 +19,42 @@
 }
 
 .key {
-  user-select: none;
-  content: 'K';
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 
-  &_Space {
+  height: 40px;
+  width: 40px;
+  cursor: pointer;
+  user-select: none;
+
+  &:before {
+    content: attr(data-icon);
+  }
+
+  &:after {
+    content: attr(data-label);
+  }
+
+  &_functional {
     flex-grow: 1;
   }
+
+  &_arrow:after {
+    display: none;
+  }
+
+  &_Space {
+    flex-grow: 10;
+  }
+
+  &_ShiftRight {
+    flex-grow: unset;
+
+    &:after {
+      display: none;
+    }
+  }
+
 }

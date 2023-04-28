@@ -5,6 +5,7 @@
  * 1. Correct the line height in all browsers.
  * 2. Prevent adjustments of font size after orientation changes in iOS.
  */
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300&display=swap");
 html {
   line-height: 1.15; /* 1 */
   -webkit-text-size-adjust: 100%; /* 2 */
@@ -308,11 +309,20 @@ template {
   display: none;
 }
 
+button {
+  font-family: "Roboto", sans-serif;
+}
+
+.page {
+  padding: 1rem 0;
+}
+
 .textarea {
   box-sizing: border-box;
   width: 100%;
   height: 200px;
   resize: vertical;
+  border-radius: 3px;
 }
 
 .keyboard {
@@ -336,13 +346,37 @@ template {
 }
 
 .key {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  width: 40px;
+  cursor: pointer;
   -webkit-user-select: none;
      -moz-user-select: none;
           user-select: none;
-  content: "K";
+}
+.key:before {
+  content: attr(data-icon);
+}
+.key:after {
+  content: attr(data-label);
+}
+.key_functional {
+  flex-grow: 1;
+}
+.key_arrow:after {
+  display: none;
 }
 .key_Space {
-  flex-grow: 1;
+  flex-grow: 10;
+}
+.key_ShiftRight {
+  flex-grow: unset;
+}
+.key_ShiftRight:after {
+  display: none;
 }
 
 .wrapper {

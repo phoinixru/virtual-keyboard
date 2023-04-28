@@ -194,11 +194,6 @@ export default {
       en: ['\\', '|'], ru: ['ё', 'Ё'],
     },
   },
-  Backspace: {
-    key: 'Backspace',
-    label: 'backspace',
-    icon: '⌫',
-  },
   BracketLeft: {
     keys: {
       en: ['[', '{'], ru: ['х', 'Х'],
@@ -250,60 +245,78 @@ export default {
     key: 'Alt',
     label: 'alt',
     icon: '⌥',
+    isFunctional: true,
   },
   AltRight: {
     key: 'Alt',
     label: 'alt',
     icon: '⌥',
+    isFunctional: true,
+  },
+    Backspace: {
+    key: 'Backspace',
+    label: 'backspace',
+    icon: '⌫',
+    isFunctional: true,
   },
   CapsLock: {
     key: 'CapsLock',
     label: 'caps lock',
     icon: '⇪',
+    isFunctional: true,
   },
   ControlLeft: {
     key: 'Control',
     label: 'ctrl',
     icon: '⌃',
+    isFunctional: true,
   },
   ControlRight: {
     key: 'Control',
     label: 'ctrl',
     icon: '⌃',
+    isFunctional: true,
   },
   Enter: {
     key: 'Enter',
     label: 'enter',
     icon: '↵',
+    isFunctional: true,
   },
   MetaLeft: {
     key: 'Meta',
     label: 'cmd',
     icon: '⌘',
+    isFunctional: true,
   },
   MetaRight: {
     key: 'Meta',
     label: 'cmd',
     icon: '⌘',
+    isFunctional: true,
   },
   ShiftLeft: {
     key: 'Shift',
     label: 'shift',
     icon: '⇧',
+    isFunctional: true,
   },
   ShiftRight: {
     key: 'Shift',
     label: 'shift',
     icon: '⇧',
+    isFunctional: true,
   },
   Space: {
     key: ' ',
     label: ' ',
+    isFunctional: true,
   },
   Tab: {
     key: 'Tab',
     label: 'tab',
     icon: '⇥',
+    isFunctional: true,
   },
 
   /* Control Pad Section */
@@ -311,6 +324,7 @@ export default {
     key: 'Delete',
     label: 'delete',
     icon: '⌦',
+    isFunctional: true,
   },
 
   /* Arrow Pad Section */

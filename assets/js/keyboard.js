@@ -1,4 +1,4 @@
-import { elt } from './utils.js';
+import { elt, assign } from './utils.js';
 import KEYS from './keys.js';
 
 const CssClasses = {
@@ -54,9 +54,10 @@ export default class VirtualKeyboard {
   renderKey(code) {
     const btnKey = KEYS[code];
     const {
-      key, keys, label, icon, isFunctional,
+      key, keys, label = '', icon = '', isFunctional,
     } = btnKey;
     const { en, ru } = keys || {};
+    const dataset = { code };
 
     const btnLabel = label || (en && en[0]) || code;
 
@@ -80,14 +81,13 @@ export default class VirtualKeyboard {
 
     if (icon) {
       button.classList.add(CssClasses.KEY_ICON);
+      assign(dataset, { icon });
     }
 
     button.classList.add(`${CssClasses.KEY}_${code}`);
 
-    button.innerText = btnLabel;
-
-    const dataset = { code };
-    Object.assign(button.dataset, dataset);
+    assign(dataset, { label: btnLabel });
+    assign(button.dataset, dataset);
 
     this.buttons[code] = button;
 
