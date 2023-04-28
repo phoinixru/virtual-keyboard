@@ -1,9 +1,3 @@
-.textarea {
-  width: 100%;
-  height: 200px;
-  resize: vertical;
-}
-
 .keyboard {
   border: 1px solid #000;
   border-radius: 3px;
@@ -25,16 +19,10 @@
 }
 
 .key {
-  -webkit-user-select: none;
-     -moz-user-select: none;
-          user-select: none;
-  content: "K";
-}
-.key_Space {
-  flex-grow: 1;
-}
+  user-select: none;
+  content: 'K';
 
-.wrapper {
-  width: 800px;
-  margin: auto;
-}/*# sourceMappingURL=main.css.map */
+  &_Space {
+    flex-grow: 1;
+  }
+}
