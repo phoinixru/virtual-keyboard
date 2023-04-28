@@ -338,7 +338,7 @@ button {
 .textarea {
   box-sizing: border-box;
   width: 100%;
-  height: 200px;
+  height: 150px;
   border-radius: 3px;
   font-family: var(--ff-monospace);
   resize: vertical;
