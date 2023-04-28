@@ -44,6 +44,20 @@ export default class Textarea {
     element.selectionStart += 1;
   }
 
+  deleteSelection(count = -1) {
+    const { element } = this;
+    const { selectionStart, selectionEnd } = element;
+
+    if (selectionStart == selectionEnd) {
+      if (count < 0) {
+        element.selectionStart += count;
+      } else {
+        element.selectionEnd += count;
+      }
+    }
+    element.setRangeText('');
+  }
+
   focus() {
     this.element.focus();
   }
@@ -53,6 +67,14 @@ export default class Textarea {
 
     if (key.startsWith('Arrow')) {
       this.moveCursor(event);
+    }
+
+    if (key === 'Delete') {
+      this.deleteSelection(1);
+    }
+
+    if (key === 'Backspace') {
+      this.deleteSelection(-1);
     }
   }
 
