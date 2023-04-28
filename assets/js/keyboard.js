@@ -5,6 +5,7 @@ const CssClasses = {
   BLOCK: 'keyboard',
   LAYOUT: 'keyboard__layout',
   ROW: 'keyboard__row',
+  CAPS_LOCKED: 'keyboard_caps_locked',
   KEY: 'key',
   KEY_FUNCTIONAL: 'key_functional',
   KEY_ARROW: 'key_arrow',
@@ -22,11 +23,18 @@ const LAYOUT = [
   ['ControlLeft', 'AltLeft', 'MetaLeft', 'Space', 'MetaRight', 'AltRight', 'ArrowLeft', 'ArrowDown', 'ArrowRight', 'ControlRight'],
 ];
 
+const LANGUAGE = {
+  FIRST: 'en',
+  SECOND: 'ru',
+};
+
 export default class VirtualKeyboard {
   constructor() {
     this.container = elt('div', { className: CssClasses.BLOCK });
     this.buttons = {};
     this.lang = 'en';
+    this.isCapsLocked = false;
+    this.isShiftPressed = false;
 
     this.renderKeyboard();
     this.addEventListeners();
@@ -36,14 +44,14 @@ export default class VirtualKeyboard {
     this.container.addEventListener('mousedown', (event) => this.handleMouseEvents(event));
     this.container.addEventListener('mouseup', (event) => this.handleMouseEvents(event));
 
-    document.body.addEventListener('keydown', (event) => this.handleKeyDown(event));
-    document.body.addEventListener('keyup', (event) => this.handleKeyUp(event));
+    document.body.addEventListener('keydown', (event) => this.handleKeyboardEvents(event));
+    document.body.addEventListener('keyup', (event) => this.handleKeyboardEvents(event));
   }
 
   renderKeyboard() {
     const layout = elt('div', { className: CssClasses.LAYOUT });
 
-    const key = (key) => this.renderKey(key);
+    const key = (code) => this.renderKey(code);
     const row = (keys) => elt('div', { className: CssClasses.ROW }, ...keys.map(key));
 
     layout.append(...LAYOUT.map(row));
@@ -54,14 +62,16 @@ export default class VirtualKeyboard {
   renderKey(code) {
     const btnKey = KEYS[code];
     const {
-      key, keys, label = '', icon = '', isFunctional,
+      keys, label = '', icon = '', isFunctional,
     } = btnKey;
-    const { en, ru } = keys || {};
+
     const dataset = { code };
 
-    const btnLabel = label || (en && en[0]) || code;
-
     const button = elt('button', { className: CssClasses.KEY });
+
+    if (code === 'CapsLock') {
+      button.append(elt('i'));
+    }
 
     if (isFunctional) {
       button.classList.add(CssClasses.KEY_FUNCTIONAL);
@@ -84,9 +94,23 @@ export default class VirtualKeyboard {
       assign(dataset, { icon });
     }
 
-    button.classList.add(`${CssClasses.KEY}_${code}`);
+    const {
+      [LANGUAGE.FIRST]: firstLang = [],
+      [LANGUAGE.SECOND]: secondLang = [],
+    } = keys || {};
 
-    assign(dataset, { label: btnLabel });
+    const [mainKey, auxKey] = firstLang;
+    const [slMainKey, slAuxKey] = secondLang;
+
+    if (mainKey) {
+      assign(dataset, {
+        mainKey, auxKey, slMainKey, slAuxKey,
+      });
+    } else {
+      assign(dataset, { label: label || code });
+    }
+
+    button.classList.add(`${CssClasses.KEY}_${code}`);
     assign(button.dataset, dataset);
 
     this.buttons[code] = button;
@@ -113,6 +137,22 @@ export default class VirtualKeyboard {
 
       this.dispatchKeyboardEvent(code);
     }
+
+    if (code === 'CapsLock') {
+      this.setCapsLock(event);
+    }
+  }
+
+  handleKeyboardEvents(event) {
+    if (event.type === 'keydown') {
+      this.handleKeyDown(event);
+    } else {
+      this.handleKeyUp(event);
+    }
+
+    if (event.code === 'CapsLock') {
+      this.setCapsLock(event);
+    }
   }
 
   handleKeyDown(event) {
@@ -134,20 +174,45 @@ export default class VirtualKeyboard {
   dispatchKeyboardEvent(code) {
     const { key, keys, isFunctional } = KEYS[code];
     const { lang, isCapsLocked, isShiftPressed } = this;
-    const shifted = isCapsLocked || isShiftPressed ? 1 : 0;
     let eventKey;
 
-    if (isFunctional) {
+    if (isFunctional || key) {
       eventKey = key;
     } else {
-      eventKey = key || keys[lang][shifted];
+      const [mainKey, auxKey] = keys[lang];
+
+      if (
+        isShiftPressed
+        || (isCapsLocked && code.startsWith('Key'))
+      ) {
+        eventKey = auxKey;
+      } else {
+        eventKey = mainKey;
+      }
     }
 
     const event = new KeyboardEvent('keydown', {
-      code, key: eventKey
+      code, key: eventKey,
     });
 
-    console.log(event);
     document.body.dispatchEvent(event);
+  }
+
+  setCapsLock(event) {
+    const { isTrusted, type } = event;
+
+    if (!isTrusted) {
+      return;
+    }
+
+    if (type.match('key')) {
+      this.isCapsLocked = event.getModifierState('CapsLock');
+    }
+
+    if (type === 'mousedown') {
+      this.isCapsLocked = !this.isCapsLocked;
+    }
+
+    this.container.classList.toggle(CssClasses.CAPS_LOCKED, this.isCapsLocked);
   }
 }

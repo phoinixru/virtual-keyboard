@@ -350,6 +350,8 @@ button {
 .keyboard {
   border: 1px solid #000;
   border-radius: 3px;
+  width: 750px;
+  margin: auto;
 }
 
 .keyboard__layout {
@@ -391,6 +393,9 @@ button {
 .key:after {
   content: attr(data-label);
 }
+.key[data-main-key]:after {
+  content: attr(data-main-key);
+}
 .key:hover {
   background: var(--bg-button-hover);
 }
@@ -410,6 +415,27 @@ button {
 }
 .key_Space {
   flex-grow: 10;
+}
+
+.key_CapsLock {
+  position: relative;
+}
+.key_CapsLock i {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  right: 5px;
+  top: 5px;
+  border-radius: 100%;
+  background: #fff;
+}
+
+.keyboard_caps_locked .key[data-code^=Key]:after {
+  content: attr(data-aux-key);
+}
+.keyboard_caps_locked .key_CapsLock i {
+  background: greenyellow;
+  box-shadow: 0 0 7px 3px greenyellow;
 }
 
 .wrapper {
