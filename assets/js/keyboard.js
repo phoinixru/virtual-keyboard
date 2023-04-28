@@ -104,13 +104,15 @@ export default class VirtualKeyboard {
     const { code } = target.dataset;
     const isPressed = type === 'mousedown';
 
+    this.togglePressed(code, isPressed);
+
     if (type === 'mousedown') {
       document.addEventListener('mouseup', () => {
         this.togglePressed(code, false);
       }, { once: true });
-    }
 
-    this.togglePressed(code, isPressed);
+      this.dispatchKeyboardEvent(code);
+    }
   }
 
   handleKeyDown(event) {
@@ -127,5 +129,23 @@ export default class VirtualKeyboard {
     if (button) {
       button.classList.toggle(CssClasses.KEY_PRESSED, isPressed);
     }
+  }
+
+  dispatchKeyboardEvent(code) {
+    const { key, keys, isFunctional } = KEYS[code];
+    const { lang, isCapsLocked, isShiftPressed } = this;
+
+    if (isFunctional) {
+      return;
+    }
+
+    const shifted = isCapsLocked || isShiftPressed ? 1 : 0;
+    const eventKey = key || keys[lang][shifted];
+    const event = new KeyboardEvent('keydown', {
+      code, key: eventKey
+    });
+
+    console.log(event);
+    document.body.dispatchEvent(event);
   }
 }

@@ -60,7 +60,7 @@
   }
 
   &_pressed,
-  &:active {
+  &_pressed:hover {
     background: var(--bg-button-pressed);
   }
 
@@ -70,10 +70,6 @@
 
   &_Space {
     flex-grow: 10;
-  }
-
-  &_ShiftRight {
-
   }
 
 }

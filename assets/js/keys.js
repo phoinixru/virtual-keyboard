@@ -337,11 +337,11 @@ export default {
     icon: '↑',
   },
   ArrowDown: {
-    keys: 'ArrowDown',
+    key: 'ArrowDown',
     icon: '↓',
   },
   ArrowRight: {
-    keys: 'ArrowRight',
+    key: 'ArrowRight',
     icon: '→',
   },
 };

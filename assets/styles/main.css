@@ -389,7 +389,7 @@ button {
   flex-grow: 1;
   background: var(--bg-button-functional);
 }
-.key_pressed, .key:active {
+.key_pressed, .key_pressed:hover {
   background: var(--bg-button-pressed);
 }
 .key_arrow:after {
@@ -398,6 +398,7 @@ button {
 .key_Space {
   flex-grow: 10;
 }
+
 .wrapper {
   width: 800px;
   margin: auto;
