@@ -134,13 +134,15 @@ export default class VirtualKeyboard {
   dispatchKeyboardEvent(code) {
     const { key, keys, isFunctional } = KEYS[code];
     const { lang, isCapsLocked, isShiftPressed } = this;
+    const shifted = isCapsLocked || isShiftPressed ? 1 : 0;
+    let eventKey;
 
     if (isFunctional) {
-      return;
+      eventKey = key;
+    } else {
+      eventKey = key || keys[lang][shifted];
     }
 
-    const shifted = isCapsLocked || isShiftPressed ? 1 : 0;
-    const eventKey = key || keys[lang][shifted];
     const event = new KeyboardEvent('keydown', {
       code, key: eventKey
     });
