@@ -58,8 +58,8 @@ export default class VirtualKeyboard {
     this.container.addEventListener('mousedown', (event) => this.handleMouseEvents(event));
     this.container.addEventListener('mouseup', (event) => this.handleMouseEvents(event));
 
-    document.body.addEventListener('keydown', (event) => this.handleKeyboardEvents(event));
-    document.body.addEventListener('keyup', (event) => this.handleKeyboardEvents(event));
+    document.addEventListener('keydown', (event) => this.handleKeyboardEvents(event), true);
+    document.addEventListener('keyup', (event) => this.handleKeyboardEvents(event), true);
   }
 
   addCreatedClause() {

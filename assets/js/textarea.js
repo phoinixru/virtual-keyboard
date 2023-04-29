@@ -13,7 +13,7 @@ export default class Textarea {
   }
 
   addEventHandlers() {
-    document.body.addEventListener('keydown', (event) => this.handleKeyDown(event), true);
+    document.addEventListener('keydown', (event) => this.handleKeyDown(event), true);
   }
 
   handleKeyDown(event) {
