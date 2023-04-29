@@ -6,7 +6,9 @@ const CssClasses = {
   CREATED: 'keyboard__created',
   LAYOUT: 'keyboard__layout',
   ROW: 'keyboard__row',
-  CAPS_LOCKED: 'keyboard_caps_locked',
+  CAPS: 'keyboard_caps',
+  SHIFT_PRESSED: 'keyboard_shift_pressed',
+  SHIFT_STICKY: 'keyboard_shift_sticky',
   KEY: 'key',
   KEY_FUNCTIONAL: 'key_functional',
   KEY_ARROW: 'key_arrow',
@@ -35,6 +37,8 @@ const REPEAT_KEYS_DEFAULT = true;
 const REPEAT_KEYS_DELAY = 500;
 const REPEAT_KEYS_INTERVAL = 100;
 
+const SPECIAL_KEYS = ['CapsLock', 'Shift', 'Control', 'Alt', 'Meta'];
+
 export default class VirtualKeyboard {
   constructor({ repeatKeys = REPEAT_KEYS_DEFAULT } = {}) {
     this.container = elt('div', { className: CssClasses.BLOCK });
@@ -42,6 +46,7 @@ export default class VirtualKeyboard {
     this.lang = 'en';
     this.isCapsLocked = false;
     this.isShiftPressed = false;
+    this.stickyShift = false;
     this.repeatKeys = repeatKeys;
 
     this.renderKeyboard();
@@ -77,10 +82,9 @@ export default class VirtualKeyboard {
   }
 
   renderKey(code) {
-    const btnKey = KEYS[code];
     const {
       keys, label = '', icon = '', isFunctional,
-    } = btnKey;
+    } = KEYS[code];
 
     const dataset = { code };
 
@@ -124,7 +128,7 @@ export default class VirtualKeyboard {
         mainKey, auxKey, slMainKey, slAuxKey,
       });
     } else {
-      assign(dataset, { label: label || code });
+      assign(dataset, { label });
     }
 
     button.classList.add(`${CssClasses.KEY}_${code}`);
@@ -143,6 +147,7 @@ export default class VirtualKeyboard {
     }
 
     const { code } = target.dataset;
+    const { key } = KEYS[code];
     const isPressed = type === 'mousedown';
 
     this.togglePressed(code, isPressed);
@@ -151,20 +156,26 @@ export default class VirtualKeyboard {
       this.handleMouseDown(code);
     }
 
-    if (code === 'CapsLock') {
+    if (key === 'CapsLock') {
       this.setCapsLock(event);
+    }
+
+    if (key === 'Shift') {
+      this.setShift(event);
     }
   }
 
   handleMouseDown(code) {
+    const { key = '' } = KEYS[code];
     const dispatch = () => this.dispatchKeyboardEvent(code);
 
-    let repeatKeysDelay, repeatKeysInterval;
-    
-    if (this.repeatKeys) {
+    let repeatKeysDelay;
+    let repeatKeysInterval;
+
+    if (this.repeatKeys && !SPECIAL_KEYS.includes(key)) {
       repeatKeysDelay = setTimeout(() => {
         dispatch();
-        repeatKeysInterval = setInterval(dispatch, REPEAT_KEYS_INTERVAL)
+        repeatKeysInterval = setInterval(dispatch, REPEAT_KEYS_INTERVAL);
       }, REPEAT_KEYS_DELAY);
     }
 
@@ -188,10 +199,27 @@ export default class VirtualKeyboard {
     if (event.code === 'CapsLock') {
       this.setCapsLock(event);
     }
+
+    if (event.key === 'Shift') {
+      this.setShift(event);
+    }
   }
 
   handleKeyDown(event) {
-    this.togglePressed(event.code, true);
+    const {
+      code, isTrusted, altKey, metaKey, ctrlKey, key,
+    } = event;
+    const hasSpecial = altKey || metaKey || ctrlKey;
+
+    if (
+      !isTrusted
+      || (hasSpecial && !SPECIAL_KEYS.includes(key))
+    ) {
+      return;
+    }
+
+    this.togglePressed(code, true);
+    this.dispatchKeyboardEvent(code);
   }
 
   handleKeyUp(event) {
@@ -207,8 +235,14 @@ export default class VirtualKeyboard {
   }
 
   dispatchKeyboardEvent(code) {
+    if (!KEYS[code]) {
+      return;
+    }
+
     const { key, keys, isFunctional } = KEYS[code];
-    const { lang, isCapsLocked, isShiftPressed } = this;
+    const {
+      lang, isCapsLocked, isShiftPressed, stickyShift,
+    } = this;
     let eventKey;
 
     if (isFunctional || key) {
@@ -217,8 +251,9 @@ export default class VirtualKeyboard {
       const [mainKey, auxKey] = keys[lang];
 
       if (
-        isShiftPressed
-        || (isCapsLocked && code.startsWith('Key'))
+        (isCapsLocked && code.startsWith('Key'))
+        || isShiftPressed
+        || stickyShift
       ) {
         eventKey = auxKey;
       } else {
@@ -231,6 +266,11 @@ export default class VirtualKeyboard {
     });
 
     document.body.dispatchEvent(event);
+
+    if (eventKey.length === 1) {
+      this.stickyShift = false;
+      this.toggleShift();
+    }
   }
 
   setCapsLock(event) {
@@ -248,6 +288,37 @@ export default class VirtualKeyboard {
       this.isCapsLocked = !this.isCapsLocked;
     }
 
-    this.container.classList.toggle(CssClasses.CAPS_LOCKED, this.isCapsLocked);
+    this.container.classList.toggle(CssClasses.CAPS, this.isCapsLocked);
+  }
+
+  setShift(event) {
+    const { isTrusted, type, shiftKey } = event;
+    let { isShiftPressed, stickyShift } = this;
+
+    if (!isTrusted) {
+      return;
+    }
+
+    if (type.match('key')) {
+      isShiftPressed = event.getModifierState('Shift');
+      stickyShift = false;
+    }
+
+    if (type === 'mousedown' && !shiftKey) {
+      stickyShift = !stickyShift;
+    }
+
+    if (type === 'mouseup' && !stickyShift) {
+      isShiftPressed = false;
+    }
+
+    this.isShiftPressed = isShiftPressed;
+    this.stickyShift = stickyShift;
+    this.toggleShift();
+  }
+
+  toggleShift() {
+    this.container.classList.toggle(CssClasses.SHIFT_PRESSED, this.isShiftPressed);
+    this.container.classList.toggle(CssClasses.SHIFT_STICKY, this.stickyShift);
   }
 }

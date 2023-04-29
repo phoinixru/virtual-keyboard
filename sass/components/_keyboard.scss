@@ -98,7 +98,7 @@
   }
 }
 
-.keyboard_caps_locked {
+.keyboard_caps {
   .key[data-code^=Key]:after {
     content: attr(data-aux-key);
   }
@@ -106,5 +106,21 @@
   .key_CapsLock i {
     background: greenyellow;
     box-shadow: 0 0 7px 3px greenyellow;
+  }
+}
+
+.keyboard_shift_pressed {
+  .key[data-aux-key]:after {
+    content: attr(data-aux-key);
+  }
+}
+
+.keyboard_shift_sticky {
+  .key[data-aux-key]:after {
+    content: attr(data-aux-key);
+  }
+
+  .key[data-code^=Shift] {
+    background: var(--bg-button-pressed);
   }
 }
