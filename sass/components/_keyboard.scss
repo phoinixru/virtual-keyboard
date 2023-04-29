@@ -1,13 +1,15 @@
 .keyboard {
   width: 750px;
   margin: auto;
+
+  --gap: 5px;
 }
 
 .keyboard__layout {
-  padding: 5px;
+  padding: var(--gap);
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: var(--gap);
   border: 1px solid #000;
   border-radius: 3px;
 }
@@ -17,7 +19,7 @@
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: space-between;
-  gap: 5px;
+  gap: var(--gap);
 }
 
 .keyboard__created {
