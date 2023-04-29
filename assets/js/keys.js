@@ -149,13 +149,13 @@ export default {
   /* Functional Keys */
   AltLeft: {
     key: 'Alt',
-    label: 'alt',
+    label: 'opt',
     icon: '⌥',
     isFunctional: true,
   },
   AltRight: {
     key: 'Alt',
-    label: 'alt',
+    label: 'opt',
     icon: '⌥',
     isFunctional: true,
   },
