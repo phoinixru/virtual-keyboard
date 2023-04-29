@@ -17,16 +17,12 @@ export default class Textarea {
   }
 
   handleKeyDown(event) {
-    const {
-      key, altKey, ctrlKey, metaKey,
-    } = event;
-    const specialKeys = altKey || ctrlKey || metaKey;
+    const { isTrusted, key } = event;
+    event.preventDefault();
 
-    if (specialKeys) {
+    if (isTrusted) {
       return;
     }
-
-    event.preventDefault();
 
     if (key.length > 1) {
       this.handleSpecialKeys(event);
