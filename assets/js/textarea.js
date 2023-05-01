@@ -4,6 +4,13 @@ const CssClasses = {
   BLOCK: 'textarea',
 };
 
+const ARROWS = {
+  ArrowLeft: '←',
+  ArrowUp: '↑',
+  ArrowDown: '↓',
+  ArrowRight: '→',
+};
+
 export default class Textarea {
   constructor({ focused = true } = {}) {
     this.focused = focused;
@@ -62,7 +69,7 @@ export default class Textarea {
     const { key } = event;
 
     if (key.startsWith('Arrow')) {
-      this.moveCursor(event);
+      this.addArrow(event);
     }
 
     if (key === 'Delete') {
@@ -82,20 +89,8 @@ export default class Textarea {
     }
   }
 
-  moveCursor(event) {
+  addArrow(event) {
     const { key } = event;
-    const { element } = this;
-
-    if (key === 'ArrowLeft') {
-      if (element.selectionStart > 0) {
-        element.selectionStart -= 1;
-      }
-      element.selectionEnd = element.selectionStart;
-    }
-
-    if (key === 'ArrowRight') {
-      element.selectionEnd += 1;
-      element.selectionStart = element.selectionEnd;
-    }
+    this.addChar(ARROWS[key]);
   }
 }
