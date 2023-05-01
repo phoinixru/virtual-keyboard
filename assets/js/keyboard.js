@@ -218,11 +218,16 @@ export default class VirtualKeyboard {
       }, REPEAT_KEYS_DELAY);
     }
 
-    document.addEventListener('mouseup', () => {
+    document.addEventListener('mouseup', (event) => {
+      const { shiftKey } = event;
       this.togglePressed(code, false);
 
       clearInterval(repeatKeysDelay);
       clearInterval(repeatKeysInterval);
+
+      if (key === 'Shift') {
+        this.setShift({ type: 'mouseup', shiftKey });
+      }
     }, { once: true });
 
     dispatch();

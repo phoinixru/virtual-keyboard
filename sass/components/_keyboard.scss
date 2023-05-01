@@ -4,7 +4,7 @@
 
   --gap: 5px;
   --btn-width: 45px;
-  --key-margin: 3px 0;
+  --key-margin: 2px 0;
 }
 
 .keyboard__layout {
@@ -67,7 +67,6 @@
   &[data-aux-key]:before {
     content: attr(data-aux-key);
     font-size: 0.8em;
-    align-self: flex-start;
   }
 
   &:hover {
