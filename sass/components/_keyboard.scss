@@ -1,8 +1,10 @@
 .keyboard {
-  width: 750px;
+  width: 800px;
   margin: auto;
 
   --gap: 5px;
+  --btn-width: 45px;
+  --key-margin: 3px 0;
 }
 
 .keyboard__layout {
@@ -26,14 +28,18 @@
   text-align: center;
 }
 
+.keyboard__lang {
+  text-align: center;
+}
+
 .key {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 40px;
-  width: 40px;
-  padding: 0;
+  height: var(--btn-width);
+  width: var(--btn-width);
+  padding: 5px;
 
   border: 1px solid var(--color-button-border);
   border-radius: 4px;
@@ -42,19 +48,26 @@
   background: var(--bg-button);
 
   cursor: pointer;
-  user-select: none;
   transition: background 0.2s;
 
   &:before {
     content: attr(data-icon);
+    margin: var(--key-margin);
   }
 
   &:after {
     content: attr(data-label);
+    margin: var(--key-margin);
   }
 
   &[data-main-key]:after {
     content: attr(data-main-key);
+  }
+
+  &[data-aux-key]:before {
+    content: attr(data-aux-key);
+    font-size: 0.8em;
+    align-self: flex-start;
   }
 
   &:hover {
@@ -69,6 +82,20 @@
   &_functional {
     flex-grow: 1;
     background: var(--bg-button-functional);
+    width: auto;
+
+    &.key_right {
+      align-items: start;
+    }
+
+    &:last-child,
+    &.key_left {
+      align-items: end;
+    }
+
+    &:first-child {
+      align-items: start;
+    }
   }
 
   &_pressed,
@@ -80,8 +107,24 @@
     display: none;
   }
 
-  &_Space {
-    flex-grow: 10;
+  &[data-code^=Control] {
+    flex-grow: unset;
+    width: calc(var(--btn-width) * 1.2);
+  }
+
+  &_ShiftRight {
+    flex-grow: unset;
+    width: calc(2.2 * var(--btn-width) + var(--gap));
+  }
+}
+
+.keyboard__row:last-child {
+  .key_functional {
+    flex-grow: unset;
+  }
+
+  .key_Space {
+    flex-grow: 1;
   }
 }
 
@@ -101,10 +144,6 @@
 }
 
 .keyboard_caps {
-  .key[data-code^=Key]:after {
-    content: attr(data-aux-key);
-  }
-
   .key_CapsLock i {
     background: greenyellow;
     box-shadow: 0 0 7px 3px greenyellow;
@@ -112,17 +151,71 @@
 }
 
 .keyboard_shift_pressed {
+  .key[data-aux-key]:before {
+    display: none;
+  }
+
   .key[data-aux-key]:after {
     content: attr(data-aux-key);
   }
 }
 
 .keyboard_shift_sticky {
+  .key[data-aux-key]:before {
+    display: none;
+  }
+
   .key[data-aux-key]:after {
     content: attr(data-aux-key);
   }
 
   .key[data-code^=Shift] {
     background: var(--bg-button-pressed);
+  }
+}
+
+.keyboard_lang_default {
+  &.keyboard_caps {
+    .key_letter:after {
+      content: attr(data-aux-key);
+    }
+  }
+
+  .key_letter:before {
+    display: none;
+  }
+}
+
+.keyboard_lang_alternate {
+  .key {
+    &_letter-sl:before {
+      display: none;
+    }
+
+    &[data-sl-main-key]:after {
+      content: attr(data-sl-main-key);
+    }
+
+    &[data-sl-aux-key]:before {
+      content: attr(data-sl-aux-key);
+    }
+  }
+
+  &.keyboard_caps {
+    .key_letter-sl:after {
+      content: attr(data-sl-aux-key);
+    }
+  }
+
+  &.keyboard_shift_pressed {
+    .key[data-aux-key]:after {
+      content: attr(data-sl-aux-key);
+    }
+  }
+
+  &.keyboard_shift_sticky {
+    .key[data-aux-key]:after {
+      content: attr(data-sl-aux-key);
+    }
   }
 }

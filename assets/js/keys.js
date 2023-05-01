@@ -149,13 +149,13 @@ export default {
   /* Functional Keys */
   AltLeft: {
     key: 'Alt',
-    label: 'opt',
+    label: 'option',
     icon: '⌥',
     isFunctional: true,
   },
   AltRight: {
     key: 'Alt',
-    label: 'opt',
+    label: 'option',
     icon: '⌥',
     isFunctional: true,
   },
@@ -173,31 +173,31 @@ export default {
   },
   ControlLeft: {
     key: 'Control',
-    label: 'ctrl',
+    label: 'control',
     icon: '⌃',
     isFunctional: true,
   },
   ControlRight: {
     key: 'Control',
-    label: 'ctrl',
+    label: 'control',
     icon: '⌃',
     isFunctional: true,
   },
   Enter: {
     key: 'Enter',
-    label: 'enter',
+    label: 'return',
     icon: '↵',
     isFunctional: true,
   },
   MetaLeft: {
     key: 'Meta',
-    label: 'cmd',
+    label: 'command',
     icon: '⌘',
     isFunctional: true,
   },
   MetaRight: {
     key: 'Meta',
-    label: 'cmd',
+    label: 'command',
     icon: '⌘',
     isFunctional: true,
   },

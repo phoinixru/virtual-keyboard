@@ -1,9 +1,12 @@
-import { elt, assign } from './utils.js';
+import { elt, assign, values } from './utils.js';
 import KEYS from './keys.js';
 
 const CssClasses = {
   BLOCK: 'keyboard',
   CREATED: 'keyboard__created',
+  LANGUAGE: 'keyboard__lang',
+  LANGUAGE_DEFAULT: 'keyboard_lang_default',
+  LANGUAGE_ALTERNATE: 'keyboard_lang_alternate',
   LAYOUT: 'keyboard__layout',
   ROW: 'keyboard__row',
   CAPS: 'keyboard_caps',
@@ -16,6 +19,8 @@ const CssClasses = {
   KEY_LEFT: 'key_left',
   KEY_RIGHT: 'key_right',
   KEY_PRESSED: 'key_pressed',
+  KEY_LETTER: 'key_letter',
+  KEY_LETTER_SL: 'key_letter-sl',
 };
 
 const LAYOUT = [
@@ -30,8 +35,10 @@ const LANGUAGE = {
   FIRST: 'en',
   SECOND: 'ru',
 };
+const DEFAULT_LANGUAGE = 'en';
 
-const CREATED_IN_TEXT = 'Keyboard created in MacOS';
+const CREATED_IN_TEXT = 'The Keyboard created in MacOS';
+const LANGUAGE_SWITCH_HINT = 'Switch Language: Ctrl + Opt(Alt)';
 
 const REPEAT_KEYS_DEFAULT = true;
 const REPEAT_KEYS_DELAY = 500;
@@ -43,14 +50,15 @@ export default class VirtualKeyboard {
   constructor({ repeatKeys = REPEAT_KEYS_DEFAULT } = {}) {
     this.container = elt('div', { className: CssClasses.BLOCK });
     this.buttons = {};
-    this.lang = 'en';
     this.isCapsLocked = false;
     this.isShiftPressed = false;
     this.stickyShift = false;
     this.repeatKeys = repeatKeys;
 
+    this.setLanguage();
     this.renderKeyboard();
     this.addCreatedClause();
+    this.addLanguageSwitchHint();
     this.addEventListeners();
   }
 
@@ -68,6 +76,29 @@ export default class VirtualKeyboard {
         className: CssClasses.CREATED,
       }, CREATED_IN_TEXT),
     );
+  }
+
+  addLanguageSwitchHint() {
+    this.container.append(
+      elt('p', {
+        className: CssClasses.LANGUAGE,
+      }, LANGUAGE_SWITCH_HINT),
+    );
+  }
+
+  setLanguage(change = false) {
+    let lang = localStorage?.lang || DEFAULT_LANGUAGE;
+
+    if (change) {
+      lang = values(LANGUAGE).filter((e) => e !== lang).pop();
+    }
+
+    this.lang = lang;
+    localStorage.lang = lang;
+
+    const isDefaultLang = lang === DEFAULT_LANGUAGE;
+    this.container.classList.toggle(CssClasses.LANGUAGE_DEFAULT, isDefaultLang);
+    this.container.classList.toggle(CssClasses.LANGUAGE_ALTERNATE, !isDefaultLang);
   }
 
   renderKeyboard() {
@@ -122,16 +153,24 @@ export default class VirtualKeyboard {
 
     const [mainKey, auxKey] = firstLang;
     const [slMainKey, slAuxKey] = secondLang;
+    let isLetter = false;
+    let isSlLetter = false;
 
     if (mainKey) {
       assign(dataset, {
         mainKey, auxKey, slMainKey, slAuxKey,
       });
+
+      isLetter = auxKey === mainKey.toUpperCase();
+      isSlLetter = slAuxKey === slMainKey.toUpperCase();
     } else {
       assign(dataset, { label });
     }
 
     button.classList.add(`${CssClasses.KEY}_${code}`);
+    button.classList.toggle(CssClasses.KEY_LETTER, isLetter);
+    button.classList.toggle(CssClasses.KEY_LETTER_SL, isSlLetter);
+
     assign(button.dataset, dataset);
 
     this.buttons[code] = button;
@@ -190,6 +229,8 @@ export default class VirtualKeyboard {
   }
 
   handleKeyboardEvents(event) {
+    event.preventDefault();
+
     const {
       type, code, key, isTrusted,
     } = event;
@@ -220,6 +261,12 @@ export default class VirtualKeyboard {
     const hasSpecial = altKey || metaKey || ctrlKey;
 
     this.togglePressed(code, true);
+
+    const switchLang = (key === 'Alt' && ctrlKey) || (key === 'Control' && altKey);
+
+    if (switchLang) {
+      this.setLanguage(true);
+    }
 
     if (hasSpecial && !SPECIAL_KEYS.includes(key)) {
       return;
