@@ -447,6 +447,17 @@ button {
   flex-grow: unset;
   width: calc(2.2 * var(--btn-width) + var(--gap));
 }
+.key_Lang {
+  flex-grow: unset;
+  width: var(--btn-width);
+  font-variant: small-caps;
+}
+.key_Lang:after {
+  align-self: center;
+}
+.key_Lang:before {
+  display: none;
+}
 
 .keyboard__row:last-child .key_functional {
   flex-grow: unset;

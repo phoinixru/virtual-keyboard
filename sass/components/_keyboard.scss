@@ -115,6 +115,19 @@
     flex-grow: unset;
     width: calc(2.2 * var(--btn-width) + var(--gap));
   }
+
+  &_Lang {
+    flex-grow: unset;
+    width: var(--btn-width);
+    font-variant: small-caps;
+    
+    &:after {
+      align-self: center;
+    }
+    &:before {
+      display: none;
+    }
+  }
 }
 
 .keyboard__row:last-child {

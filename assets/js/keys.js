@@ -250,4 +250,11 @@ export default {
     key: 'ArrowRight',
     icon: '→',
   },
+
+  /* Language change */
+  Lang: {
+    key: 'Lang',
+    keys: { en: ['ru', 'ru'], ru: ['en', 'en'] },
+    isFunctional: true,
+  },
 };
