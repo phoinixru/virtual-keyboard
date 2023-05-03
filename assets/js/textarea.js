@@ -69,7 +69,7 @@ export default class Textarea {
     const { key } = event;
 
     if (key.startsWith('Arrow')) {
-      this.addArrow(event);
+      this.moveCursor(event);
     }
 
     if (key === 'Delete') {
@@ -92,5 +92,19 @@ export default class Textarea {
   addArrow(event) {
     const { key } = event;
     this.addChar(ARROWS[key]);
+  }
+
+  moveCursor(event) {
+    const { key } = event;
+    const { element } = this;
+    const keyDirection = key.replace('Arrow', '');
+
+    const granularity = ['Up', 'Down'].includes(keyDirection) ? 'line' : 'character';
+    const direction = ['Left', 'Up'].includes(keyDirection) ? 'backward' : 'forward';
+
+    element.selectionStart = element.selectionEnd;
+
+    const selection = window.getSelection();
+    selection.modify('move', direction, granularity);
   }
 }
