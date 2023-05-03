@@ -1,0 +1,30 @@
+@media (prefers-color-scheme: dark) {
+  .page {
+    background: #5a5b72;
+  }
+
+  .textarea {
+    background: #aaa;
+  }
+
+  .keyboard__layout {
+    background: #0b091f;
+  }
+
+  .key {
+    border: 0;
+    box-shadow: 0 0 2px 1px rgba(255, 255, 255, 0.7);
+    background: #333333;
+    color: #ccc;
+    transition: box-shadow 0.2s, color 0.2s;
+  }
+
+  .key_icon:before {
+    text-shadow: 0 0 1px #fff;
+  }
+
+  .key_pressed {
+    box-shadow: none;
+    color: #ccc;
+  }
+}

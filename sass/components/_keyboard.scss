@@ -1,0 +1,233 @@
+.keyboard {
+  width: 800px;
+  margin: auto;
+
+  --gap: 5px;
+  --btn-width: 45px;
+  --key-margin: 2px 0;
+}
+
+.keyboard__layout {
+  padding: var(--gap);
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  border: 1px solid #000;
+  border-radius: 3px;
+}
+
+.keyboard__row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  gap: var(--gap);
+}
+
+.keyboard__created {
+  text-align: center;
+}
+
+.keyboard__lang {
+  text-align: center;
+}
+
+.key {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: var(--btn-width);
+  width: var(--btn-width);
+  padding: 5px;
+
+  border: 1px solid var(--color-button-border);
+  border-radius: 4px;
+
+  color: var(--color-button);
+  background: var(--bg-button);
+
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:before {
+    content: attr(data-icon);
+    margin: var(--key-margin);
+  }
+
+  &:after {
+    content: attr(data-label);
+    margin: var(--key-margin);
+  }
+
+  &[data-main-key]:after {
+    content: attr(data-main-key);
+  }
+
+  &[data-aux-key]:before {
+    content: attr(data-aux-key);
+    font-size: 0.8em;
+  }
+
+  &:hover {
+    background: var(--bg-button-hover);
+  }
+
+  &[data-icon] {
+    flex-direction: column;
+    font-size: 0.8em;
+  }
+
+  &_functional {
+    flex-grow: 1;
+    background: var(--bg-button-functional);
+    width: auto;
+
+    &.key_right {
+      align-items: start;
+    }
+
+    &:last-child,
+    &.key_left {
+      align-items: end;
+    }
+
+    &:first-child {
+      align-items: start;
+    }
+  }
+
+  &_pressed,
+  &_pressed:hover {
+    background: var(--bg-button-pressed);
+  }
+
+  &_arrow:after {
+    display: none;
+  }
+
+  &[data-code^=Control] {
+    flex-grow: unset;
+    width: calc(var(--btn-width) * 1.2);
+  }
+
+  &_ShiftRight {
+    flex-grow: unset;
+    width: calc(2.2 * var(--btn-width) + var(--gap));
+  }
+
+  &_Lang {
+    flex-grow: unset;
+    width: var(--btn-width);
+    font-variant: small-caps;
+    
+    &:after {
+      align-self: center;
+    }
+    &:before {
+      display: none;
+    }
+  }
+}
+
+.keyboard__row:last-child {
+  .key_functional {
+    flex-grow: unset;
+  }
+
+  .key_Space {
+    flex-grow: 1;
+  }
+}
+
+.key_CapsLock {
+  position: relative;
+
+  i {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    right: 5px;
+    top: 5px;
+    border-radius: 100%;
+
+    background: #fff;
+  }
+}
+
+.keyboard_caps {
+  .key_CapsLock i {
+    background: greenyellow;
+    box-shadow: 0 0 7px 3px greenyellow;
+  }
+}
+
+.keyboard_shift_pressed {
+  .key[data-aux-key]:before {
+    display: none;
+  }
+
+  .key[data-aux-key]:after {
+    content: attr(data-aux-key);
+  }
+}
+
+.keyboard_shift_sticky {
+  .key[data-aux-key]:before {
+    display: none;
+  }
+
+  .key[data-aux-key]:after {
+    content: attr(data-aux-key);
+  }
+
+  .key[data-code^=Shift] {
+    background: var(--bg-button-pressed);
+  }
+}
+
+.keyboard_lang_default {
+  &.keyboard_caps {
+    .key_letter:after {
+      content: attr(data-aux-key);
+    }
+  }
+
+  .key_letter:before {
+    display: none;
+  }
+}
+
+.keyboard_lang_alternate {
+  .key {
+    &_letter-sl:before {
+      display: none;
+    }
+
+    &[data-sl-main-key]:after {
+      content: attr(data-sl-main-key);
+    }
+
+    &[data-sl-aux-key]:before {
+      content: attr(data-sl-aux-key);
+    }
+  }
+
+  &.keyboard_caps {
+    .key_letter-sl:after {
+      content: attr(data-sl-aux-key);
+    }
+  }
+
+  &.keyboard_shift_pressed {
+    .key[data-aux-key]:after {
+      content: attr(data-sl-aux-key);
+    }
+  }
+
+  &.keyboard_shift_sticky {
+    .key[data-aux-key]:after {
+      content: attr(data-sl-aux-key);
+    }
+  }
+}
